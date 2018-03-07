@@ -4,6 +4,8 @@ package com.company;
 // The use of static imports is something that should be used carefully.
 // I have only ever used this technique for the project wide constants.
 //
+import javax.swing.*;
+
 import static com.company.ProjConstants.*;
 import java.math.*;
 /**
@@ -25,11 +27,11 @@ public class StDeviation {
     //
     private int[] Data = new int[MAXDATA];
     private double[] aVariance = new double[MAXDATA];
-    private int i = 0;
+    private int itemCounter = 0;
     //Gumbo is purely to agitate Mr. Hubert
-    private int gumbo = 0;
-    private int average = 0;
-    private double variance = 0;
+
+
+
     private double StDeviation = 0;
 
     // ---------*---------*---------*---------*---------*---------*---------*---------*
@@ -39,9 +41,10 @@ public class StDeviation {
     // You MUST write this method and I will use it during testing
     //
     public void addNewDataItem(int dataItem){
-        Data[i] = dataItem;
-        i++;
-        //System.out.println(dataItem);
+        // Takes info passed on and adds it to the array
+        Data[itemCounter] = dataItem;
+        itemCounter++;
+        //System.out.println(dataItem);(for debugging)
 
     }
 
@@ -51,9 +54,10 @@ public class StDeviation {
     // You MUST write this method and I will use it during testing
     //
     public int getNumberOfDataItems(){
+        // The counter I made already does this so I just return it
 
 
-        return i;
+        return itemCounter;
     }
 
     // ---------*---------*---------*---------*---------*---------*---------*---------*
@@ -63,13 +67,14 @@ public class StDeviation {
     // You MUST write this method and I will use it during testing
     //
     public double calcAverage(){
-
+        int gumbo;
+        int average;
         gumbo = 0;
-        for(int x=0;x<i;x++){
+        for(int x=0;x<itemCounter;x++){
             gumbo += Data[x];
         }
 
-        average = gumbo/i;
+        average = gumbo/itemCounter;
 
         //System.out.println("AVERAGE:"+ average);
         return average;
@@ -82,16 +87,29 @@ public class StDeviation {
     // You MUST write this method and I will use it during testing
     //
     public double calcVariance(){
+        double variance = 0;
         variance = 0;
-        for(int y=0;y<i;y++){
+        for(int y=0;y<itemCounter;y++){
             aVariance[y] = (Data[y] - calcAverage())*(Data[y] - calcAverage());
         }
-        for(int z=0;z<i;z++){
+        for(int z=0;z<itemCounter;z++){
             variance += aVariance[z];
         }
-            variance = variance/i;
+            variance = variance/itemCounter;
         //System.out.println(variance);
 
+        return variance;
+    }
+    public double calcVarianceF(){
+        double variance = 0;
+        for(int y=0;y<itemCounter;y++){
+            aVariance[y] = (Data[y] - calcAverage())*(Data[y] - calcAverage());
+        }
+        for(int z=0;z<itemCounter;z++){
+            variance += aVariance[z];
+        }
+        variance = variance/itemCounter;
+        //System.out.println(variance);
         return variance;
     }
 
@@ -105,10 +123,7 @@ public class StDeviation {
     public double calcStandardDeviation(){
 
         StDeviation = Math.sqrt(calcVariance());
-        System.out.println("Standard Deviation: "+ StDeviation);
-        System.out.println("68% of the data falls imbetween: "+(calcAverage()-StDeviation)+" and "+(calcAverage()+StDeviation));
-        System.out.println("95% of the data falls imbetween: "+(calcAverage()-StDeviation*2)+(calcAverage()+StDeviation*2));
-        System.out.println("99% of the data falls imbetween: "+(calcAverage()-StDeviation*3)+(calcAverage()+StDeviation*3));
+
         return StDeviation;
     }
 
